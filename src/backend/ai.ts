@@ -44,7 +44,7 @@ export const getDestinationAI = async (
   }
   const chain = prompt.pipe(chatModel);
 
-  return await chain
+  await chain
     .invoke({
       startingLocation,
       travelTypeText,

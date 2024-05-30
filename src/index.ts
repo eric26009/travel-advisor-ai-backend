@@ -34,8 +34,7 @@ app.get(
       monthOfTravel: month as string
     };
 
-    const output = await getDestinationAI(payload, res, next);
-    res.json(output);
+    await getDestinationAI(payload, res, next);
   }
 );
 
