@@ -12,10 +12,15 @@ export type Month =
   | 'November'
   | 'December';
 
-export type TravelType = 'roadTrip' | 'domestic' | 'international';
+export type TravelType = 'roadtrip' | 'domestic' | 'international';
 
 export interface UnknownDestinationType {
-  startingLocation: string;
+  startLocation: string;
   type: TravelType | string;
+  monthOfTravel: Month | string;
+}
+
+export interface KnownDestinationType {
+  endLocation: string;
   monthOfTravel: Month | string;
 }
