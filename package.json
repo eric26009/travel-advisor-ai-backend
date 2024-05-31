@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "npx tsc",
-    "start": "node src/index.js",
+    "start": "node dist/src/index.js",
     "dev": "nodemon src/index.ts",
     "prettier-format": "prettier --config .prettierrc 'src/**/*.ts' --write"
   },

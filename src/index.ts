@@ -7,9 +7,9 @@ dotenv.config();
 
 const app: Application = express();
 const port = process.env.PORT || 8000;
-const cors = require("cors");
+const cors = require('cors');
 
-app.use(cors({origin: "*"}))
+app.use(cors({ origin: '*' }));
 app.use('/travel', unknownDestinationRouter);
 
 app.get('/', async (req: Request, res: Response) => {
