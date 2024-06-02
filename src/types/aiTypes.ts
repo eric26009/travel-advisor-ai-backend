@@ -24,3 +24,16 @@ export interface KnownDestinationType {
   endLocation: string;
   monthOfTravel: Month | string;
 }
+
+export interface ActivityResponse {
+  activities: {
+    title: string;
+    type: string;
+    description: string;
+    address: string;
+  }[];
+}
+
+export interface DestinationResponse {
+  destinations: { location: string; description: string }[];
+}

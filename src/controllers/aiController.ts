@@ -1,8 +1,9 @@
 import { ChatOpenAI } from '@langchain/openai';
 import { PromptTemplate } from '@langchain/core/prompts';
+import { JsonOutputParser } from '@langchain/core/output_parsers';
 import dotenv from 'dotenv';
 import { Request, Response, NextFunction } from 'express';
-import { UnknownDestinationType } from '../types/aiTypes';
+import { ActivityResponse, DestinationResponse } from '../types/aiTypes';
 
 //For env File
 dotenv.config();
@@ -13,7 +14,7 @@ const chatModel = new ChatOpenAI({
 });
 
 const travelTypes = {
-  roadtrip: 'local road trip',
+  roadTrip: 'local road trip',
   domestic: 'domestic trip anywhere in the US',
   international: 'international trip anywhere in the world'
 };
@@ -29,22 +30,17 @@ export const unknownDestination = async (
     res.status(400).json({ error: 'Missing required parameters' });
   } else {
     const travelTypeText = travelTypes[type as keyof typeof travelTypes];
+    const isRoadTrip = (type as string).toLowerCase() === 'roadtrip';
     const prompt = PromptTemplate.fromTemplate(
       `I want to go on a vacation but I do not know where I want to go yet. I am located in {startLocation}. 
-    I am thinking of doing a {travelTypeText}. I want to go during the month of {month}. Can you recommend 3 places for me to go?
-    Can you return this as a json object, the location should have the key "location" and then why part should have the key "why".
-   `
+      I am thinking of doing a {travelTypeText}. I want to go during the month of {month}. Can you recommend 3 places for me to go?
+      Can you return this as a json object, the location should have the key "location" and then why part should have the key "description".
+      These objects should be in an array whose key is "destinations".
+      ${isRoadTrip ? 'I want this road trip to not be longer than 4 hours away.' : ''}`
     );
 
-    if (type === 'roadtrip') {
-      prompt.pipe(
-        PromptTemplate.fromTemplate(
-          `I want this road trip to not be longer than 4 hours away.
-   `
-        )
-      );
-    }
-    const chain = prompt.pipe(chatModel);
+    const parser = new JsonOutputParser<DestinationResponse>();
+    const chain = prompt.pipe(chatModel).pipe(parser);
 
     await chain
       .invoke({
@@ -53,7 +49,7 @@ export const unknownDestination = async (
         month: month as string
       })
       .then((out) => {
-        res.status(200).json(JSON.parse(out.content as string));
+        res.status(200).json(out);
       })
       .catch(next);
   }
@@ -74,10 +70,12 @@ export const knownDestination = async (
        I want to go during the month of {month}. Can you recommend 3 activities for me to do on my vacation?
       Can you return this as a json object, the activity type should use the key "type", the activity title should use the key "title", 
       the activity description should use the key "description", and the activity address should use the key "address".
+      These objects should be in an array whose key is "activities".
    `
     );
 
-    const chain = prompt.pipe(chatModel);
+    const parser = new JsonOutputParser<ActivityResponse>();
+    const chain = prompt.pipe(chatModel).pipe(parser);
 
     await chain
       .invoke({
@@ -85,7 +83,7 @@ export const knownDestination = async (
         month: month as string
       })
       .then((out) => {
-        res.status(200).json(JSON.parse(out.content as string));
+        res.status(200).json(out);
       })
       .catch(next);
   }
