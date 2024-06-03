@@ -10,7 +10,7 @@ export const checkAccessCode = async (
   res: Response,
   next: NextFunction
 ) => {
-  const { auth } = req.query;
+  const { authorization: accessCode } = req.headers;
 
   const client = new Client({
     user: process.env.DB_USER,
@@ -28,7 +28,7 @@ export const checkAccessCode = async (
 
   try {
     const queryRes = await client.query(
-      `SELECT EXISTS(SELECT 1 FROM "defaultSchema"."accessCodes" WHERE access_code='${auth as string}')`
+      `SELECT EXISTS(SELECT 1 FROM "defaultSchema"."accessCodes" WHERE access_code='${accessCode as string}')`
     );
     if (queryRes.rows[0].exists === true) {
       console.log('VALID ACCESS CODE');
