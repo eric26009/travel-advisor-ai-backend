@@ -4,6 +4,7 @@ import { JsonOutputParser } from '@langchain/core/output_parsers';
 import dotenv from 'dotenv';
 import { Request, Response, NextFunction } from 'express';
 import { ActivityResponse, DestinationResponse } from '../types/aiTypes';
+import { v4 as uuidv4 } from 'uuid';
 
 //For env File
 dotenv.config();
@@ -49,7 +50,12 @@ export const unknownDestination = async (
         month: month as string
       })
       .then((out) => {
-        res.status(200).json(out);
+        res.status(200).json({
+          destinations: out.destinations.map((dest) => ({
+            id: uuidv4(),
+            ...dest
+          }))
+        });
       })
       .catch(next);
   }
@@ -83,7 +89,12 @@ export const knownDestination = async (
         month: month as string
       })
       .then((out) => {
-        res.status(200).json(out);
+        res.status(200).json({
+          activities: out.activities.map((act) => ({
+            id: uuidv4(),
+            ...act
+          }))
+        });
       })
       .catch(next);
   }
