@@ -37,6 +37,7 @@ export const unknownDestination = async (
       I am thinking of doing a {travelTypeText}. I want to go during the month of {month}. Can you recommend 3 places for me to go?
       Can you return this as a json object, the location should have the key "location" and then why part should have the key "description".
       These objects should be in an array whose key is "destinations".
+      The "why" part should include details as to why I should travel there. Include the most popular attraction there as well.
       ${isRoadTrip ? 'I want this road trip to not be longer than 4 hours away.' : ''}`
     );
 
