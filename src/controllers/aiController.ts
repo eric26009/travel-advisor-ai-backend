@@ -38,6 +38,7 @@ export const unknownDestination = async (
       Can you return this as a json object, the location should have the key "location" and then why part should have the key "description".
       These objects should be in an array whose key is "destinations".
       The "why" part should include details as to why I should travel there. Include the most popular attraction there as well.
+      There should be no additional fields added in the response.
       ${isRoadTrip ? 'I want this road trip to not be longer than 4 hours away.' : ''}`
     );
 
@@ -77,7 +78,7 @@ export const knownDestination = async (
        I want to go during the month of {month}. Can you recommend 3 activities for me to do on my vacation?
       Can you return this as a json object, the activity type should use the key "type", the activity title should use the key "title", 
       the activity description should use the key "description", and the activity address should use the key "address".
-      These objects should be in an array whose key is "activities".
+      These objects should be in an array whose key is "activities". There should be no additional fields added in the response.
    `
     );
 
