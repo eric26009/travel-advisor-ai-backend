@@ -12,7 +12,11 @@ const port = process.env.PORT || 8000;
 app.use(
   cors({
     credentials: true,
-    origin: ['http://localhost:3000'] // Whitelist the domains you want to allow
+    origin: [
+      'http://localhost:3000',
+      'https://www.ericfeldman.me',
+      'https://ericfeldman.me'
+    ] // Whitelist the domains you want to allow
   })
 );
 app.use('/travel', unknownDestinationRouter);
