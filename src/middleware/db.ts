@@ -1,4 +1,4 @@
-import { Client, Pool } from 'pg';
+// import { Client, Pool } from 'pg';
 import dotenv from 'dotenv';
 import { NextFunction, Request, Response } from 'express';
 
@@ -12,38 +12,42 @@ export const checkAccessCode = async (
 ) => {
   const { authorization: accessCode } = req.headers;
 
-  const client = new Client({
-    user: process.env.DB_USER,
-    host: process.env.DB_HOST,
-    database: process.env.DB_DATABASE,
-    password: process.env.DB_PASSWORD,
-    port: parseInt(process.env.DB_PORT || '')
-  });
+  return accessCode === process.env.TEMP_ACCESS_CODE
+    ? next()
+    : res.status(401).json({ error: 'Invalid access code' });
 
-  try {
-    await client.connect();
-  } catch (e) {
-    res.status(503).json({ error: 'Database is down' });
-  }
+  // const client = new Client({
+  //   user: process.env.DB_USER,
+  //   host: process.env.DB_HOST,
+  //   database: process.env.DB_DATABASE,
+  //   password: process.env.DB_PASSWORD,
+  //   port: parseInt(process.env.DB_PORT || '')
+  // });
 
-  try {
-    const queryRes = await client.query(
-      `SELECT EXISTS(SELECT 1 FROM "defaultSchema"."accessCodes" WHERE access_code='${accessCode as string}')`
-    );
-    if (queryRes.rows[0].exists === true) {
-      console.log('VALID ACCESS CODE');
-      next();
-    } else {
-      res.status(401).json({ error: 'Invalid or missing access code' });
-      console.log('Invalid access code');
-      client.end();
-      return;
-    }
-  } catch (e) {
-    res.status(503).json({ error: 'Database error' });
-    client.end();
-    return;
-  }
+  // try {
+  //   await client.connect();
+  // } catch (e) {
+  //   res.status(503).json({ error: 'Database is down' });
+  // }
 
-  client.end();
+  // try {
+  //   const queryRes = await client.query(
+  //     `SELECT EXISTS(SELECT 1 FROM "defaultSchema"."accessCodes" WHERE access_code='${accessCode as string}')`
+  //   );
+  //   if (queryRes.rows[0].exists === true) {
+  //     console.log('VALID ACCESS CODE');
+  //     next();
+  //   } else {
+  //     res.status(401).json({ error: 'Invalid or missing access code' });
+  //     console.log('Invalid access code');
+  //     client.end();
+  //     return;
+  //   }
+  // } catch (e) {
+  //   res.status(503).json({ error: 'Database error' });
+  //   client.end();
+  //   return;
+  // }
+
+  // client.end();
 };
