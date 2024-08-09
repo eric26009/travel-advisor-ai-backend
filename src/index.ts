@@ -1,6 +1,6 @@
 import express, { Request, Response, Application } from 'express';
 import dotenv from 'dotenv';
-import { unknownDestinationRouter } from './routes';
+import { travelRouter } from './routes';
 import cors from 'cors';
 
 //For env File
@@ -19,7 +19,7 @@ app.use(
     ] // Whitelist the domains you want to allow
   })
 );
-app.use('/travel', unknownDestinationRouter);
+app.use('/travel', travelRouter);
 
 app.get('/', async (req: Request, res: Response) => {
   res

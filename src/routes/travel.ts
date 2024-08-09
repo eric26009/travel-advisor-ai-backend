@@ -1,11 +1,11 @@
 import { Router } from 'express';
 
-import { knownDestination, unknownDestination } from '../controllers';
+import { activity, destination } from '../controllers';
 import { checkAccessCode } from '../middleware';
 
-const unknownDestinationRouter = Router();
+const travelRouter = Router();
 
-unknownDestinationRouter.get('/unknown', checkAccessCode, unknownDestination);
-unknownDestinationRouter.get('/known', checkAccessCode, knownDestination);
+travelRouter.get('/destination', checkAccessCode, destination);
+travelRouter.get('/activity', checkAccessCode, activity);
 
-export { unknownDestinationRouter };
+export { travelRouter };

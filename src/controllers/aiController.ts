@@ -20,7 +20,7 @@ const travelTypes = {
   international: 'international trip anywhere in the world'
 };
 
-export const unknownDestination = async (
+export const destination = async (
   req: Request,
   res: Response,
   next: NextFunction
@@ -63,7 +63,7 @@ export const unknownDestination = async (
   }
 };
 
-export const knownDestination = async (
+export const activity = async (
   req: Request,
   res: Response,
   next: NextFunction

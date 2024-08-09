@@ -14,13 +14,13 @@ export type Month =
 
 export type TravelType = 'roadtrip' | 'domestic' | 'international';
 
-export interface UnknownDestinationType {
+export interface DestinationType {
   startLocation: string;
   type: TravelType | string;
   monthOfTravel: Month | string;
 }
 
-export interface KnownDestinationType {
+export interface ActivityType {
   endLocation: string;
   monthOfTravel: Month | string;
 }
