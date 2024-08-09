@@ -19,7 +19,7 @@ app.use(
     ] // Whitelist the domains you want to allow
   })
 );
-app.use('/travel', travelRouter);
+app.use('/api/travel', travelRouter);
 
 app.get('/', async (req: Request, res: Response) => {
   res
